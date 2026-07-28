@@ -1,0 +1,21 @@
+# Normalise line endings in the repository.
+#
+# Without this, Git stores whatever the checkout produced and Windows CRLF
+# churn makes generated files (routeTree.gen.ts in particular) show as modified
+# with an empty diff — which blocks branch switches and hides real changes in
+# the noise.
+* text=auto eol=lf
+
+# Binary assets must never be touched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+
+# Windows-only scripts are more predictable with CRLF.
+*.ps1 text eol=crlf
