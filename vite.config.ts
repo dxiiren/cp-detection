@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import { devtools } from '@tanstack/devtools-vite'
 
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import { nitro } from 'nitro/vite'
 
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -33,7 +34,11 @@ const config = defineConfig({
     __SITE_URL__: JSON.stringify(siteUrl.replace(/\/+$/, '')),
     __SITE_INDEXABLE__: JSON.stringify(siteIndexable),
   },
-  plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
+  // nitro() is what makes this deployable. Without it `vite build` emits only
+  // dist/client + dist/server and Vercel has no server to route to, so every
+  // path 404s. Nitro detects the host from the environment and writes the
+  // Build Output API tree (.vercel/output) — no preset needed for Vercel.
+  plugins: [devtools(), tailwindcss(), tanstackStart(), nitro(), viteReact()],
   // Port lives here rather than in the `dev` script so `--port` on the command
   // line (just dev 3005) cleanly overrides it instead of fighting a flag that
   // is already baked in. strictPort because silently drifting to 3001 leaves
