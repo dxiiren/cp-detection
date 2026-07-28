@@ -8,6 +8,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { ClipboardCheck } from 'lucide-react'
 
+import { NotFound } from '#/components/not-found'
 import { Toaster } from '#/components/ui/sonner'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import {
@@ -84,6 +85,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       jsonLdScript(softwareApplicationJsonLd(SITE_ORIGIN)),
     ],
   }),
+  // Configured here so every miss anywhere in the tree lands on it. Left
+  // unset, the router falls back to `defaultNotFoundComponent` — a bare
+  // `<p>Not Found</p>` — and warns about it on the server for each request.
+  notFoundComponent: NotFound,
   shellComponent: RootDocument,
 })
 
