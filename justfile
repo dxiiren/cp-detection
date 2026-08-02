@@ -165,6 +165,16 @@ e2e-ui: _require-deps _require-browser
 e2e-report:
     pnpm exec playwright show-report
 
+# Same specs, real build: minified, tree-shaken, served through nitro instead
+# of the dev pipeline. Builds first, then frees the port -- the prod config
+# refuses to reuse an existing server, so a forgotten dev server on :3000
+# fails loudly here instead of passing its dev behaviour off as the build's.
+# Not part of `just verify` (it would build + rerun the whole suite); run it
+# before a release or after touching the build config.
+# The acceptance suite against the production build (`just preview`)
+e2e-prod: _require-deps _require-browser build stop
+    pnpm exec playwright test --config playwright.prod.config.ts
+
 # EVERYTHING -- vitest then playwright
 test-all: _require-deps _require-browser
     pnpm test:all

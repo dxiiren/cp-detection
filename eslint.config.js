@@ -15,6 +15,15 @@ export default [
     },
   },
   {
-    ignores: ['eslint.config.js', 'prettier.config.js'],
+    // Build output joined this list the day `just e2e-prod` arrived: the
+    // recipe leaves .output/ behind, and without the ignore the very next
+    // `just lint` chokes on minified bundles it was never meant to read.
+    ignores: [
+      'eslint.config.js',
+      'prettier.config.js',
+      '.output/',
+      '.nitro/',
+      'dist/',
+    ],
   },
 ]
