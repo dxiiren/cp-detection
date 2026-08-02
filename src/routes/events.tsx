@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-table'
 import type { ColumnDef } from '@tanstack/react-table'
 import { useState } from 'react'
+import { ExportButtons } from '#/components/export-buttons'
 import { Badge } from '#/components/ui/badge'
 import { Button } from '#/components/ui/button'
 import {
@@ -161,12 +162,20 @@ function EventsTable({
     // table's own overflow-x-auto container can never actually scroll — the
     // page widens instead, and the whole layout breaks sideways.
     <div className="grid min-w-0 gap-4">
-      <Input
-        aria-label="Filter events"
-        placeholder="Filter by field, method, contents…"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      />
+      {/* Wraps rather than overflowing, same reason as the tabs row above:
+          at 390px the input plus two buttons are wider than the viewport. */}
+      <div className="flex flex-wrap items-center gap-2">
+        <Input
+          aria-label="Filter events"
+          placeholder="Filter by field, method, contents…"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="min-w-[12rem] flex-1"
+        />
+        {/* Exports what this tab actually holds — for the server tab that is
+            the redacted view, which is the honest thing to hand out. */}
+        <ExportButtons records={data} />
+      </div>
       <div className="min-w-0 overflow-hidden rounded-md border">
         <Table data-testid={testId}>
           <TableHeader>
