@@ -69,7 +69,10 @@ Two defects that every jsdom test happily agreed with:
 Playground `/` — `data-testid="playground"` carrying `data-detecting="true|false"`, fields `#email`
 (Email), `#notes` (Notes), `#bio` (contenteditable), `#confirm-email` (protected, blocks paste,
 protection **on** by default), `#referral` (Referral code — rendered by `ReferralField`, which has no
-paste handler of its own and must stay that way; it is the proof the global listener works).
+paste handler of its own and must stay that way; it is the proof the global listener works —
+`src/components/referral-field.dom.test.tsx` pins that by walking the component's own element tree
+for `on*` props as well as asserting a paste into it still lands, so a local handler fails the inner
+loop rather than only the acceptance suite).
 Switches: `toggle-block`, `toggle-preview`, `toggle-keep-toasts`; plus `toast-seconds` (number
 input, 1–60, clamped in the store) and `clear-toasts`.
 
@@ -189,6 +192,12 @@ second one differing only by `media` replaces the first instead of sitting besid
 `src/lib/events-log.ts` — deliberately **not** `*.server.ts`; that suffix marks a module server-only
 and it is imported by a client route. The builder method is `.validator()` (the runtime deprecates
 `.inputValidator()`, despite what the type names suggest).
+
+`events-log.test.ts` covers the wiring — which validator guards which handler, under which method,
+and that nothing reaches the log unsanitised. It stands `createServerFn` in, because `.handler()`
+expects the Start plugin's transform to hand it an extracted twin and there is no transform under
+plain Vitest; the stand-in models the **server** path only (validate, then hand the validator's
+output to the handler). The real RPC transport stays the Playwright layer's job.
 
 ## Conventions
 
