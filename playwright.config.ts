@@ -15,12 +15,25 @@ export default defineConfig({
   timeout: 60_000,
   // Compiles every route once before the workers start; see the file for why.
   globalSetup: './tests/e2e/global-setup.ts',
-  // Every worker loads pages from ONE Vite dev server, and the axe scans are
-  // CPU-heavy in-page. At four workers the whole suite intermittently starved
-  // that server — layout.spec passes 16/16 in 23s on its own, but failed in
-  // roughly one full run in three. Two workers is slower and deterministic,
-  // which is the right trade for a gate you are meant to trust.
-  workers: 2,
+  // Every worker loads pages from ONE Vite dev server, so the ceiling here is
+  // that server's throughput, NOT the core count — this box has 32 cores and
+  // the suite stops getting faster long before it runs out of them.
+  //
+  // Two workers dated from before globalSetup warmed the routes: back then the
+  // lazy first-compile of a route was paid inside the tests, four workers all
+  // piled onto it at once, and layout.spec failed roughly one run in three.
+  // With warming moved out of the tests the ceiling is much higher. Measured
+  // on this machine, whole suite, dev server restarted before each run:
+  //
+  //   workers=2 → 57s   workers=4 → 44s   workers=8 → 36s   workers=16 → 38s
+  //
+  // Eight is the knee; past it the single dev server saturates and wall-clock
+  // gets worse, not better. Held at eight for four consecutive runs: 67/67
+  // passed every time, zero flaky (35s / 40s / 35s / 34s).
+  //
+  // If you make the in-page work heavier (more axe scans, say), re-measure —
+  // this number tracks the server, not the hardware.
+  workers: 8,
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
