@@ -10,15 +10,15 @@
 On Windows you need only PowerShell and winget — `setup.ps1` installs everything else. On Linux/Mac
 the script does not run; install the toolchain with your package manager.
 
-| Tool                | Why                                                        | Installed by (Windows)      |
-| ------------------- | ---------------------------------------------------------- | --------------------------- |
-| Git                 | Version control                                            | setup.ps1 (winget)          |
-| Node.js LTS         | Vite 8 / TanStack Start need a modern Node                 | setup.ps1 (winget)          |
-| pnpm                | The lockfile is pnpm's — npm would produce a different tree | setup.ps1 (npm -g)          |
-| Claude Code CLI     | The agent tooling this repo is set up for                  | setup.ps1 (npm -g)          |
-| uv                  | Only as the installer for `just` (team convention)         | setup.ps1 (astral.sh)       |
-| just                | Task runner — every command below is a recipe              | setup.ps1 (`uv tool install rust-just`) |
-| Playwright Chromium | The only browser the E2E suite can use                     | setup.ps1 / `just install`  |
+| Tool                | Why                                                         | Installed by (Windows)                  |
+| ------------------- | ----------------------------------------------------------- | --------------------------------------- |
+| Git                 | Version control                                             | setup.ps1 (winget)                      |
+| Node.js LTS         | Vite 8 / TanStack Start need a modern Node                  | setup.ps1 (winget)                      |
+| pnpm                | The lockfile is pnpm's — npm would produce a different tree | setup.ps1 (npm -g)                      |
+| Claude Code CLI     | The agent tooling this repo is set up for                   | setup.ps1 (npm -g)                      |
+| uv                  | Only as the installer for `just` (team convention)          | setup.ps1 (astral.sh)                   |
+| just                | Task runner — every command below is a recipe               | setup.ps1 (`uv tool install rust-just`) |
+| Playwright Chromium | The only browser the E2E suite can use                      | setup.ps1 / `just install`              |
 
 ## Windows: the scripted path
 
@@ -68,12 +68,12 @@ just start
 `.mcp.json` is **committed** in this repo — unlike secret-bearing setups, none of these four
 servers carries a token or a machine-specific path, so there is nothing to keep per-developer:
 
-| Server         | Purpose                                              |
-| -------------- | ---------------------------------------------------- |
-| playwright     | Drive a real browser when authoring/debugging specs  |
-| shadcn         | Component registry access for the UI kit             |
-| context7       | Version-current library docs                         |
-| chrome-devtools | Performance and accessibility audits                 |
+| Server          | Purpose                                             |
+| --------------- | --------------------------------------------------- |
+| playwright      | Drive a real browser when authoring/debugging specs |
+| shadcn          | Component registry access for the UI kit            |
+| context7        | Version-current library docs                        |
+| chrome-devtools | Performance and accessibility audits                |
 
 Restart Claude Code after setup and run `/mcp` to confirm they connect.
 
@@ -85,8 +85,8 @@ expects `:3000` — see [common-issues.md](../06-troubleshooting/common-issues.m
 
 ## Related docs
 
-| Document                                                                     | Why you might read it next                 |
-| ----------------------------------------------------------------------------- | ------------------------------------------ |
-| [../03-development/workflow.md](../03-development/workflow.md)                | What to do once the app runs               |
-| [../05-reference/commands.md](../05-reference/commands.md)                    | Every just recipe in one table             |
+| Document                                                                         | Why you might read it next                |
+| -------------------------------------------------------------------------------- | ----------------------------------------- |
+| [../03-development/workflow.md](../03-development/workflow.md)                   | What to do once the app runs              |
+| [../05-reference/commands.md](../05-reference/commands.md)                       | Every just recipe in one table            |
 | [../06-troubleshooting/common-issues.md](../06-troubleshooting/common-issues.md) | If any step above did not go as described |

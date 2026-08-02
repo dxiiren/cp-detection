@@ -7,26 +7,26 @@
 
 ## The stack
 
-| Layer           | Technology                                       | Notes                                              |
-| --------------- | ------------------------------------------------ | -------------------------------------------------- |
-| Framework       | TanStack Start (React 19) on Vite 8              | SSR + server functions, Nitro for deployment       |
-| Routing         | TanStack Router, file-based (`src/routes/`)      | `routeTree.gen.ts` is generated — never hand-edit  |
-| State           | TanStack Store (`event-store.ts`), TanStack Query | Query wires the server-log fetches on `/events`    |
-| UI              | shadcn/ui over Radix, Tailwind 4, sonner toasts  | Components added via `just ui <name>`              |
-| Tests           | Vitest 4 (unit + jsdom projects), Playwright     | Chromium only for E2E — see [workflow](../03-development/workflow.md) |
-| Package manager | pnpm                                             | Import alias `#/*` → `./src/*` (`@/*` also resolves) |
+| Layer           | Technology                                        | Notes                                                                 |
+| --------------- | ------------------------------------------------- | --------------------------------------------------------------------- |
+| Framework       | TanStack Start (React 19) on Vite 8               | SSR + server functions, Nitro for deployment                          |
+| Routing         | TanStack Router, file-based (`src/routes/`)       | `routeTree.gen.ts` is generated — never hand-edit                     |
+| State           | TanStack Store (`event-store.ts`), TanStack Query | Query wires the server-log fetches on `/events`                       |
+| UI              | shadcn/ui over Radix, Tailwind 4, sonner toasts   | Components added via `just ui <name>`                                 |
+| Tests           | Vitest 4 (unit + jsdom projects), Playwright      | Chromium only for E2E — see [workflow](../03-development/workflow.md) |
+| Package manager | pnpm                                              | Import alias `#/*` → `./src/*` (`@/*` also resolves)                  |
 
 ## The seam: pure core, thin adapters
 
 Every hard problem in this codebase lives in a pure module that takes plain data and injected
 dependencies, with a thin adapter beside it that owns the browser:
 
-| Pure module (unit-tested in node)  | Adapter (owns the platform API)          | Problem                          |
-| ---------------------------------- | ---------------------------------------- | -------------------------------- |
-| `src/lib/attribution.ts`           | `src/lib/clipboard-detector.ts`          | Paste provenance from event timing |
-| `src/lib/redact.ts`                | `toServerPayload` / server functions     | The privacy boundary             |
-| `src/lib/seo.ts`                   | `src/lib/site.ts` (build-time constants) | Meta tags, JSON-LD, robots/sitemap/llms |
-| `src/lib/theme.ts`                 | `src/hooks/use-theme.ts`                 | Theme resolution + no-flash init |
+| Pure module (unit-tested in node) | Adapter (owns the platform API)          | Problem                                 |
+| --------------------------------- | ---------------------------------------- | --------------------------------------- |
+| `src/lib/attribution.ts`          | `src/lib/clipboard-detector.ts`          | Paste provenance from event timing      |
+| `src/lib/redact.ts`               | `toServerPayload` / server functions     | The privacy boundary                    |
+| `src/lib/seo.ts`                  | `src/lib/site.ts` (build-time constants) | Meta tags, JSON-LD, robots/sitemap/llms |
+| `src/lib/theme.ts`                | `src/hooks/use-theme.ts`                 | Theme resolution + no-flash init        |
 
 The reason is testability. jsdom's `ClipboardEvent` and `DataTransfer` are incomplete; if the
 provenance logic could only be exercised through them, the suite would confirm its own stubs. The
@@ -48,7 +48,7 @@ Corollary: anything non-deterministic belongs in the adapter. Record ids are min
 2. Listeners are translated into plain `{kind, at}` records and fed to the state machine in
    `attribution.ts`, which pairs a `paste` with the keydown/contextmenu/drag activity around it to
    produce the method. The pairing is a one-shot token — "have I already logged this action?" is a
-   question about *which* event, not how long ago (elapsed-time matching double-logged pastes under
+   question about _which_ event, not how long ago (elapsed-time matching double-logged pastes under
    load; see the root README's bug list).
 3. `beforeinput` with `insertFromPaste` / `insertFromDrop` covers mobile paste-bar and menu paths
    where no `ClipboardEvent` arrives at all.
@@ -67,7 +67,7 @@ Corollary: anything non-deterministic belongs in the adapter. Record ids are min
 Two limits, not one: `CLIENT_PREVIEW_LIMIT` (240) is what your own screen shows;
 `SERVER_PREVIEW_LIMIT` (80) is the most that may ever cross the wire. Truncation lands on a word
 boundary. The `trusted` flag always travels — it is metadata about the event, not clipboard
-content — and the server *requires* it, so a scripted client cannot look genuine by omitting it.
+content — and the server _requires_ it, so a scripted client cannot look genuine by omitting it.
 
 ## Server functions
 
@@ -88,8 +88,8 @@ runtime deprecates `.inputValidator()` despite what the type names suggest.
 
 ## Related docs
 
-| Document                                                              | Why you might read it next                       |
-| --------------------------------------------------------------------- | ------------------------------------------------ |
-| [project-overview.md](project-overview.md)                            | The event model and vocabulary                   |
-| [../03-development/workflow.md](../03-development/workflow.md)         | How the two test loops police this architecture  |
-| [../05-reference/project-layout.md](../05-reference/project-layout.md) | Where every file mentioned here lives            |
+| Document                                                               | Why you might read it next                      |
+| ---------------------------------------------------------------------- | ----------------------------------------------- |
+| [project-overview.md](project-overview.md)                             | The event model and vocabulary                  |
+| [../03-development/workflow.md](../03-development/workflow.md)         | How the two test loops police this architecture |
+| [../05-reference/project-layout.md](../05-reference/project-layout.md) | Where every file mentioned here lives           |

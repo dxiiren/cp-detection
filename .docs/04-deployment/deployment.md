@@ -22,13 +22,13 @@ the connected branch.
 The origin is resolved **at build time** and injected via Vite `define`, never read at runtime, so
 the server render and the client bundle cannot disagree and trip a hydration diff:
 
-| Priority | Source                                     | When it applies                           |
-| -------- | ------------------------------------------ | ----------------------------------------- |
-| 1        | `SITE_URL`                                 | Set it once there is a custom domain      |
-| 2        | `https://VERCEL_PROJECT_PRODUCTION_URL`    | Vercel's *stable* production domain       |
-| 3        | `http://localhost:3000`                    | Local builds                              |
+| Priority | Source                                  | When it applies                      |
+| -------- | --------------------------------------- | ------------------------------------ |
+| 1        | `SITE_URL`                              | Set it once there is a custom domain |
+| 2        | `https://VERCEL_PROJECT_PRODUCTION_URL` | Vercel's _stable_ production domain  |
+| 3        | `http://localhost:3000`                 | Local builds                         |
 
-Note it is the *production* URL variable, not `VERCEL_URL` — that one is unique per deployment and
+Note it is the _production_ URL variable, not `VERCEL_URL` — that one is unique per deployment and
 would canonicalise every preview to itself.
 
 ## Indexability
@@ -67,8 +67,8 @@ Nothing else. There is no database, no secret and no API key — the server log 
 
 ## Related docs
 
-| Document                                                              | Why you might read it next                     |
-| --------------------------------------------------------------------- | ---------------------------------------------- |
-| [../01-overview/architecture.md](../01-overview/architecture.md)      | Why SEO text is served by routes, not the build |
-| [../03-development/workflow.md](../03-development/workflow.md)        | The verify gate that stands in for CI          |
-| [../07-faq/faq.md](../07-faq/faq.md)                                  | Why the server log does not survive a restart  |
+| Document                                                         | Why you might read it next                      |
+| ---------------------------------------------------------------- | ----------------------------------------------- |
+| [../01-overview/architecture.md](../01-overview/architecture.md) | Why SEO text is served by routes, not the build |
+| [../03-development/workflow.md](../03-development/workflow.md)   | The verify gate that stands in for CI           |
+| [../07-faq/faq.md](../07-faq/faq.md)                             | Why the server log does not survive a restart   |

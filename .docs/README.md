@@ -9,13 +9,13 @@ the acceptance specs depend on — read it before changing the detector.
 
 ## Who is this for?
 
-| Reader                                              | Start here                                                     |
-| --------------------------------------------------- | -------------------------------------------------------------- |
-| New developer setting up a machine                  | [02-setup/getting-started.md](02-setup/getting-started.md)     |
-| Anyone about to change detection or privacy code    | [01-overview/architecture.md](01-overview/architecture.md)     |
-| Day-to-day contributor (TDD loop, commands, gates)  | [03-development/workflow.md](03-development/workflow.md)       |
-| Whoever deploys or configures the Vercel project    | [04-deployment/deployment.md](04-deployment/deployment.md)     |
-| Someone with a failing command or a flaky test      | [06-troubleshooting/common-issues.md](06-troubleshooting/common-issues.md) |
+| Reader                                             | Start here                                                                 |
+| -------------------------------------------------- | -------------------------------------------------------------------------- |
+| New developer setting up a machine                 | [02-setup/getting-started.md](02-setup/getting-started.md)                 |
+| Anyone about to change detection or privacy code   | [01-overview/architecture.md](01-overview/architecture.md)                 |
+| Day-to-day contributor (TDD loop, commands, gates) | [03-development/workflow.md](03-development/workflow.md)                   |
+| Whoever deploys or configures the Vercel project   | [04-deployment/deployment.md](04-deployment/deployment.md)                 |
+| Someone with a failing command or a flaky test     | [06-troubleshooting/common-issues.md](06-troubleshooting/common-issues.md) |
 
 ## Recommended reading order
 
@@ -31,44 +31,44 @@ the acceptance specs depend on — read it before changing the detector.
 
 ## 01-overview
 
-| Document                                              | What it covers                                                                 |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [project-overview.md](01-overview/project-overview.md) | What cp-detection is, the event model (type, method, source, trusted), scope and non-goals |
-| [architecture.md](01-overview/architecture.md)        | The pure/adapter seam, paste-provenance state machine, privacy boundary, server functions, theming and SEO layers |
+| Document                                               | What it covers                                                                                                    |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| [project-overview.md](01-overview/project-overview.md) | What cp-detection is, the event model (type, method, source, trusted), scope and non-goals                        |
+| [architecture.md](01-overview/architecture.md)         | The pure/adapter seam, paste-provenance state machine, privacy boundary, server functions, theming and SEO layers |
 
 ## 02-setup
 
-| Document                                              | What it covers                                                                 |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [getting-started.md](02-setup/getting-started.md)     | Prerequisites, what setup.ps1 installs step by step, non-Windows setup, first run, MCP servers |
+| Document                                          | What it covers                                                                                 |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| [getting-started.md](02-setup/getting-started.md) | Prerequisites, what setup.ps1 installs step by step, non-Windows setup, first run, MCP servers |
 
 ## 03-development
 
-| Document                                        | What it covers                                                                 |
-| ----------------------------------------------- | ------------------------------------------------------------------------------ |
-| [workflow.md](03-development/workflow.md)       | The TDD working agreement, inner (Vitest) and outer (Playwright) loops, the verify gate, route generation, adding shadcn components, conventions |
+| Document                                  | What it covers                                                                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [workflow.md](03-development/workflow.md) | The TDD working agreement, inner (Vitest) and outer (Playwright) loops, the verify gate, route generation, adding shadcn components, conventions |
 
 ## 04-deployment
 
-| Document                                        | What it covers                                                                 |
-| ----------------------------------------------- | ------------------------------------------------------------------------------ |
-| [deployment.md](04-deployment/deployment.md)    | Vercel via the Nitro plugin, environment variables, preview vs production indexability, what is deliberately not automated |
+| Document                                     | What it covers                                                                                                             |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| [deployment.md](04-deployment/deployment.md) | Vercel via the Nitro plugin, environment variables, preview vs production indexability, what is deliberately not automated |
 
 ## 05-reference
 
-| Document                                              | What it covers                                                                 |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [commands.md](05-reference/commands.md)               | Every just recipe, its guards, and the pnpm script underneath                  |
-| [project-layout.md](05-reference/project-layout.md)   | Annotated file tree: src/lib, hooks, routes, tests, scripts, config files      |
+| Document                                            | What it covers                                                            |
+| --------------------------------------------------- | ------------------------------------------------------------------------- |
+| [commands.md](05-reference/commands.md)             | Every just recipe, its guards, and the pnpm script underneath             |
+| [project-layout.md](05-reference/project-layout.md) | Annotated file tree: src/lib, hooks, routes, tests, scripts, config files |
 
 ## 06-troubleshooting
 
-| Document                                                        | What it covers                                                       |
-| --------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [common-issues.md](06-troubleshooting/common-issues.md)         | Port conflicts, missing Chromium, E2E flakiness and hydration waits, stale dev servers, line-ending churn |
+| Document                                                | What it covers                                                                                            |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [common-issues.md](06-troubleshooting/common-issues.md) | Port conflicts, missing Chromium, E2E flakiness and hydration waits, stale dev servers, line-ending churn |
 
 ## 07-faq
 
-| Document                          | What it covers                                                                 |
-| --------------------------------- | ------------------------------------------------------------------------------ |
-| [faq.md](07-faq/faq.md)           | Why pnpm, why Chromium only, why .mcp.json is committed, why two preview limits, what detection deliberately cannot see |
+| Document                | What it covers                                                                                                          |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [faq.md](07-faq/faq.md) | Why pnpm, why Chromium only, why .mcp.json is committed, why two preview limits, what detection deliberately cannot see |

@@ -14,11 +14,11 @@ hydration flag — read it before changing the detector or the playground markup
 
 ## The two loops
 
-| Loop  | Runner                       | What it covers                                                | Command      |
-| ----- | ---------------------------- | ------------------------------------------------------------- | ------------ |
-| Inner | Vitest, project `unit` (node) | Pure logic: attribution, redaction, stores, seo, theme, toast copy | `just test-unit` |
-| Inner | Vitest, project `dom` (jsdom) | The DOM adapter and React bindings (`*.dom.test.{ts,tsx}`)    | `just test-dom`  |
-| Outer | Playwright, Chromium only    | Real `ClipboardEvent`, real granted clipboard permissions — the definition of done | `just e2e` |
+| Loop  | Runner                        | What it covers                                                                     | Command          |
+| ----- | ----------------------------- | ---------------------------------------------------------------------------------- | ---------------- |
+| Inner | Vitest, project `unit` (node) | Pure logic: attribution, redaction, stores, seo, theme, toast copy                 | `just test-unit` |
+| Inner | Vitest, project `dom` (jsdom) | The DOM adapter and React bindings (`*.dom.test.{ts,tsx}`)                         | `just test-dom`  |
+| Outer | Playwright, Chromium only     | Real `ClipboardEvent`, real granted clipboard permissions — the definition of done | `just e2e`       |
 
 `just watch` is the inner TDD loop. The file naming carries the split: `*.test.ts` runs in node,
 `*.dom.test.ts`/`*.dom.test.tsx` runs in jsdom (and is excluded from the node project so it does
@@ -72,19 +72,19 @@ the import alias is `#/`, not `@/` (both resolve, `#/` is the convention). New c
 
 ## Conventions
 
-| Convention        | Rule                                                                    |
-| ----------------- | ----------------------------------------------------------------------- |
-| Import alias      | `#/*` → `./src/*`                                                       |
-| Package manager   | pnpm — never npm/yarn against this lockfile                             |
+| Convention        | Rule                                                                          |
+| ----------------- | ----------------------------------------------------------------------------- |
+| Import alias      | `#/*` → `./src/*`                                                             |
+| Package manager   | pnpm — never npm/yarn against this lockfile                                   |
 | Formatting        | Prettier + ESLint (TanStack config); `just fmt` writes, `just check` verifies |
-| Line endings      | `.gitattributes` normalises to LF (CRLF for `*.ps1`); do not fight it   |
-| Pure/adapter seam | Non-determinism goes in adapters; pure modules take injected clocks     |
+| Line endings      | `.gitattributes` normalises to LF (CRLF for `*.ps1`); do not fight it         |
+| Pure/adapter seam | Non-determinism goes in adapters; pure modules take injected clocks           |
 | Dev server        | Prefer `just start` over `just dev` — a stale server imitates a hydration bug |
 
 ## Related docs
 
-| Document                                                                     | Why you might read it next                    |
-| ----------------------------------------------------------------------------- | --------------------------------------------- |
-| [../01-overview/architecture.md](../01-overview/architecture.md)              | The seam the tests are protecting             |
-| [../05-reference/commands.md](../05-reference/commands.md)                    | Full recipe reference                         |
-| [../06-troubleshooting/common-issues.md](../06-troubleshooting/common-issues.md) | When a loop fails for environmental reasons  |
+| Document                                                                         | Why you might read it next                  |
+| -------------------------------------------------------------------------------- | ------------------------------------------- |
+| [../01-overview/architecture.md](../01-overview/architecture.md)                 | The seam the tests are protecting           |
+| [../05-reference/commands.md](../05-reference/commands.md)                       | Full recipe reference                       |
+| [../06-troubleshooting/common-issues.md](../06-troubleshooting/common-issues.md) | When a loop fails for environmental reasons |

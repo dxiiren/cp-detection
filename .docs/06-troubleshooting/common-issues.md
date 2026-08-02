@@ -87,9 +87,22 @@ empty, branch switches are blocked.
 
 **Cause:** CRLF churn on Windows checkouts, historically.
 
-**Fix:** already handled — `.gitattributes` normalises the repo to LF (`* text=auto eol=lf`). If
-you see it anyway, your clone predates that commit: `git add --renormalize .` once, commit, done.
-Do not "fix" it by changing your global `core.autocrlf`.
+**Fix:** already handled — `.gitattributes` normalises the repo to LF (`* text=auto eol=lf`) and
+`prettier.config.js` pins `endOfLine: 'lf'`. If you see it anyway, your clone predates that
+commit: `git add --renormalize .` once, commit, done. Do not "fix" it by changing your global
+`core.autocrlf`.
+
+## `pnpm check` flags dozens of files that look untouched
+
+**Symptom:** `prettier --check` warns on most of the repo, but `git status` is clean.
+
+**Cause:** the working tree was checked out with CRLF (a clone made before the `.gitattributes`
+commit). Git will not rewrite files it considers up to date, so the index is LF while the files
+on disk stay CRLF — invisible to git, but Prettier (`endOfLine: 'lf'`) sees every line.
+
+**Fix:** `just fmt` (or `pnpm exec prettier --write .`) rewrites the tree to LF in one pass;
+anything Prettier does not cover can be deleted and restored with `git checkout-index`. Only
+`setup.ps1` should remain CRLF (`*.ps1 text eol=crlf` is deliberate).
 
 ## A fresh setup.ps1 run says a tool installed but is not found
 
@@ -104,8 +117,8 @@ second run skips everything already present and just verifies.
 
 ## Related docs
 
-| Document                                                          | Why you might read it next                     |
-| ------------------------------------------------------------------ | ---------------------------------------------- |
-| [../02-setup/getting-started.md](../02-setup/getting-started.md)  | The setup steps these issues stem from         |
-| [../03-development/workflow.md](../03-development/workflow.md)    | The E2E conventions that prevent the flaky ones |
-| [../07-faq/faq.md](../07-faq/faq.md)                              | The "why is it built this way" background      |
+| Document                                                         | Why you might read it next                      |
+| ---------------------------------------------------------------- | ----------------------------------------------- |
+| [../02-setup/getting-started.md](../02-setup/getting-started.md) | The setup steps these issues stem from          |
+| [../03-development/workflow.md](../03-development/workflow.md)   | The E2E conventions that prevent the flaky ones |
+| [../07-faq/faq.md](../07-faq/faq.md)                             | The "why is it built this way" background       |

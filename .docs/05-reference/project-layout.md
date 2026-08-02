@@ -97,17 +97,17 @@ tests/e2e/
 
 ## Generated vs authored
 
-| Path                  | Status    | Regenerate with           |
-| --------------------- | --------- | ------------------------- |
-| `src/routeTree.gen.ts` | Generated | `just routes` (or dev server) |
-| `public/`             | Generated, committed | `just assets`  |
-| `pnpm-lock.yaml`      | Generated | `pnpm install` (never hand-edit; `just ci-install` refuses to change it) |
-| Everything else       | Authored  | —                         |
+| Path                   | Status               | Regenerate with                                                          |
+| ---------------------- | -------------------- | ------------------------------------------------------------------------ |
+| `src/routeTree.gen.ts` | Generated            | `just routes` (or dev server)                                            |
+| `public/`              | Generated, committed | `just assets`                                                            |
+| `pnpm-lock.yaml`       | Generated            | `pnpm install` (never hand-edit; `just ci-install` refuses to change it) |
+| Everything else        | Authored             | —                                                                        |
 
 ## Related docs
 
-| Document                                                            | Why you might read it next               |
-| ------------------------------------------------------------------- | ---------------------------------------- |
-| [../01-overview/architecture.md](../01-overview/architecture.md)    | Why the lib modules are split as they are |
-| [commands.md](commands.md)                                          | The recipes that operate on this tree    |
-| [../03-development/workflow.md](../03-development/workflow.md)      | The naming conventions tests follow      |
+| Document                                                         | Why you might read it next                |
+| ---------------------------------------------------------------- | ----------------------------------------- |
+| [../01-overview/architecture.md](../01-overview/architecture.md) | Why the lib modules are split as they are |
+| [commands.md](commands.md)                                       | The recipes that operate on this tree     |
+| [../03-development/workflow.md](../03-development/workflow.md)   | The naming conventions tests follow       |

@@ -41,7 +41,7 @@ architectural change, not a bug fix.
 ## Why is `trusted` recorded but never filtered on?
 
 A scripted paste is the row you most want to see — an anti-fraud system that hides untrusted events
-defeats itself. So `Event.isTrusted` travels with every record (the server *requires* it, so a
+defeats itself. So `Event.isTrusted` travels with every record (the server _requires_ it, so a
 scripted client cannot look genuine by omitting the field), and the log tells `user` and `script`
 apart instead of dropping either. An acceptance spec pastes both ways and asserts exactly that.
 
@@ -85,8 +85,8 @@ locally is the gate before pushing, and Vercel builds whatever lands on the conn
 
 ## Related docs
 
-| Document                                                              | Why you might read it next               |
-| --------------------------------------------------------------------- | ---------------------------------------- |
-| [../01-overview/architecture.md](../01-overview/architecture.md)      | The seam behind half these answers       |
-| [../04-deployment/deployment.md](../04-deployment/deployment.md)      | Indexability and environment variables   |
-| [../06-troubleshooting/common-issues.md](../06-troubleshooting/common-issues.md) | When a question is really a symptom |
+| Document                                                                         | Why you might read it next             |
+| -------------------------------------------------------------------------------- | -------------------------------------- |
+| [../01-overview/architecture.md](../01-overview/architecture.md)                 | The seam behind half these answers     |
+| [../04-deployment/deployment.md](../04-deployment/deployment.md)                 | Indexability and environment variables |
+| [../06-troubleshooting/common-issues.md](../06-troubleshooting/common-issues.md) | When a question is really a symptom    |
