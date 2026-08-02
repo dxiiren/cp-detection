@@ -37,6 +37,7 @@ still expects `:3000` — see the note in the justfile header.
 | `just test-dom`       | jsdom only: the DOM adapter and React bindings                        |
 | `just watch`          | Vitest watch mode — the inner TDD loop                                |
 | `just e2e`            | Playwright acceptance specs — the outer loop, the definition of done  |
+| `just e2e-prod`       | The same specs against the production build: builds, frees the port, then runs the shipped server entry (`playwright.prod.config.ts`). Refuses to reuse an existing :3000 server. Not in `just verify` — run before a release |
 | `just e2e-file <f>`   | One spec file or filter, e.g. `just e2e-file clipboard`               |
 | `just e2e-headed`     | Watch the specs in a real browser window, one worker                  |
 | `just e2e-ui`         | Playwright interactive UI mode — best for debugging a failing selector |

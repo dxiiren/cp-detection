@@ -17,6 +17,11 @@ Task runner is `just` (`just --list`); recipes wrap the pnpm scripts and add gua
   Narrow with `just test-unit` / `just test-dom`; `just watch` is the inner loop.
 - `just e2e` — Playwright, Chromium only (clipboard permissions aren't grantable elsewhere).
   `just e2e-headed` / `just e2e-ui` to watch or debug.
+- `just e2e-prod` — the same specs against the production build, via `playwright.prod.config.ts`:
+  builds, then runs `node .output/server/index.mjs` (NOT `vite preview`, whose static layer
+  misreports the manifest content-type — the nitro output and Vercel's CDN both serve it right).
+  Refuses to reuse an existing :3000 server so a forgotten dev server fails loudly. Not part of
+  `verify`; run before a release or after touching build-time config.
 - `just verify` — the full gate: typecheck, lint, vitest, playwright. Run before pushing.
 - `just start` — kill the dev port, then run the dev server. Prefer this over `just dev`: a stale
   dev server serving an old module graph presents identically to a hydration bug, and cost real
@@ -90,7 +95,9 @@ Toast copy — `Pasted {n} chars into {label}` / `Copied …from` / `Cut …from
 description `via keyboard | via right-click | via drag & drop`. Blocked paste: `Paste blocked`.
 
 Events `/events` — tabs for the session store (`data-testid="events-table"`) and the server log
-(`data-testid="server-events-table"`), rows `data-testid="event-row"`, newest first.
+(`data-testid="server-events-table"`), rows `data-testid="event-row"`, newest first. Each tab's
+toolbar carries `export-csv` / `export-json` buttons (disabled when that tab is empty), which
+download exactly what the tab shows.
 
 ## Two preview limits, on purpose
 
@@ -98,6 +105,16 @@ Events `/events` — tabs for the session store (`data-testid="events-table"`) a
 (80) is the most that may ever cross the wire. Your screen and the network are not the same place;
 one number for both made toasts read as cut off. `previewOf` cuts on a **word boundary** — a preview
 stopping mid-word reads as corrupted rather than as a deliberate excerpt.
+
+## Export
+
+Same seam again: `src/lib/export.ts` is **pure** (CSV / JSON text, dated filename with an injected
+clock) and `src/components/export-buttons.tsx` is the adapter owning the Blob/anchor mechanics.
+The export re-runs `previewOf` at `CLIENT_PREVIEW_LIMIT` on every row — it does not trust the store
+to have redacted, the same stance the server takes towards the client — and the CSV both quotes per
+RFC 4180 and prefixes `= + - @` cells with `'`, because clipboard contents are attacker-controlled
+and Excel executes formulas. Rows are rebuilt field-by-field like `sanitizeIncomingPayload`, so a
+future record property must be exported deliberately.
 
 ## `trusted`
 

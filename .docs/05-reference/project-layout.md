@@ -19,6 +19,7 @@ cp-detection/
   vite.config.ts         port (3000, strictPort), canonical-origin define, nitro plugin
   vitest.config.ts       two projects: unit (node) and dom (jsdom)
   playwright.config.ts   Chromium only, 2 workers, webServer on :3000
+  playwright.prod.config.ts   same suite against the built server entry (`just e2e-prod`)
   tsconfig.json          strict TS; # and @ aliases to src/
   components.json        shadcn config -- alias #/, styling defaults
   eslint.config.js       TanStack ESLint config
@@ -38,6 +39,7 @@ src/lib/
   clipboard-detector.ts  ADAPTER  document-level capture listeners -> {kind, at} records
   describe-target.ts     field -> readable label (visible label wins over id)
   redact.ts              PURE  the privacy boundary, both directions (240/80 limits)
+  export.ts              PURE  the log as CSV / JSON -- re-redacts previews on the way out
   event-store.ts         TanStack Store: events + settings (toast seconds clamped 1-60)
   server-log.ts          in-memory server log -- capped, deduped by record id
   events-log.ts          TanStack Start server functions (NOT *.server.ts -- client-imported)
@@ -62,6 +64,7 @@ src/
     use-theme.ts                 adapter: localStorage + matchMedia
   components/
     referral-field.tsx           deliberately has NO paste handler -- proof the global listener works
+    export-buttons.tsx           ADAPTER over lib/export.ts: blob + anchor download mechanics
     theme-toggle.tsx             light -> dark -> system cycle
     not-found.tsx                the 404 page
     ui/                          shadcn components (added via `just ui`)

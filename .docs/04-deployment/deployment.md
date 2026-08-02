@@ -57,9 +57,10 @@ Nothing else. There is no database, no secret and no API key — the server log 
 
 ## What is deliberately not automated
 
-- **The production build is not exercised by the test suite.** Everything is verified against the
-  dev server; the SEO specs were additionally run by hand against `just preview`, which is how the
-  canonical origin and the hashed font URLs were confirmed.
+- **`just e2e-prod` is not part of `just verify`.** It runs the full acceptance suite against the
+  built output (`node .output/server/index.mjs`, the server that actually ships) — run it before a
+  release or after touching anything that only exists at build time. It replaced the old known
+  limit where the SEO specs were re-run against `just preview` by hand.
 - **Two attribution paths need a human**: a real OS right-click → Paste, and a mobile paste-bar
   paste, to confirm `right-click` attribution holds outside the harness. Do this once per
   significant detector change, on the deployed URL.

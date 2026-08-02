@@ -4,7 +4,18 @@ Detects **copy, cut, paste and drag-drop on any input on the page**, raises a to
 keeps a searchable log — including _how_ the paste was triggered (Ctrl+V, right-click menu, or a
 drag).
 
+**Live demo: <https://cp-detection.vercel.app>** — open it, paste anything, then check
+[/events](https://cp-detection.vercel.app/events).
+
 TanStack Start · React 19 · shadcn/ui · Tailwind 4 · TanStack Router / Query / Table / Store.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/events-log-dark.png">
+  <img src="docs/images/events-log-light.png" alt="The events log: four detected events with their type, provenance, user-or-script source, target field, character count and preview — plus filter, Export CSV and Export JSON controls.">
+</picture>
+
+That screenshot is the product in one table: the paste in the top row never touched a paste handler —
+it was dispatched by a script, and the `Source` column says so.
 
 ---
 
@@ -50,6 +61,12 @@ session and for the server log.
 
 Each event records: type, method, **source** (`user` or `script`), target label, character count, a
 truncated preview, and a timestamp.
+
+Either tab exports as **CSV or JSON** — a dated file, built entirely in the browser, holding exactly
+what that tab shows. The CSV quotes per RFC 4180 and defuses spreadsheet formula injection (a
+clipboard is attacker-controlled by definition, and Excel executes any cell starting with `=`), and
+both formats re-cut every preview at the client's 240-character boundary rather than trusting the
+store to have done it — the same stance the server takes towards the client.
 
 Settings on the playground: block paste on protected fields, send excerpts to the server, keep
 toasts until dismissed, how many seconds a toast stays (1–60), and dismiss-all.
@@ -123,6 +140,7 @@ rather than a database quietly accumulating other people's clipboards.
 | `just test`                       | Vitest — unit + jsdom                                                         |
 | `just watch`                      | Vitest watch, the inner TDD loop                                              |
 | `just e2e`                        | Playwright acceptance specs                                                   |
+| `just e2e-prod`                   | the same specs against the **production build** — run before a release        |
 | `just e2e-headed` / `just e2e-ui` | watch or debug them in a real browser                                         |
 | `just verify`                     | **the full gate** — typecheck, lint, vitest, playwright                       |
 | `just ui dialog`                  | add shadcn components                                                         |
@@ -166,6 +184,23 @@ E2E specs must wait for hydration before acting — `data-detecting="true"` on t
 a paste fired against server-rendered markup lands natively with no listener attached, and the suite
 would then pass or fail on timing rather than behaviour.
 
+### The production build gets the same treatment
+
+`just e2e-prod` builds, then runs the whole acceptance suite against the built output — minified,
+tree-shaken, served through nitro instead of the dev pipeline. It refuses to reuse a server already
+on :3000, so a forgotten dev server fails the run loudly instead of quietly passing its dev
+behaviour off as the build's.
+
+It runs `node .output/server/index.mjs` — the server that actually ships — rather than
+`vite preview`, and earned that distinction on its very first run: the suite failed on
+`site.webmanifest` arriving as `application/octet-stream`, which turned out to be vite preview's own
+static layer misreporting the type. The nitro output and Vercel's CDN both serve
+`application/manifest+json`. A harness that tests the wrong server finds the wrong bugs.
+
+It is not part of `just verify` — it rebuilds and reruns the full suite, which is the wrong cost for
+the inner loop. Run it before a release, or after touching `vite.config.ts` or anything else that
+only exists at build time.
+
 ---
 
 ## Layout
@@ -177,6 +212,7 @@ src/
     clipboard-detector.ts DOM adapter: document-level capture listeners
     describe-target.ts    field -> readable label (visible label wins over id)
     redact.ts             the privacy boundary, both directions
+    export.ts             pure: the log as CSV / JSON, re-redacted on the way out
     event-store.ts        TanStack Store: events + settings
     server-log.ts         in-memory server log (capped, deduped)
     events-log.ts         TanStack Start server functions
@@ -242,9 +278,6 @@ SITE_URL=https://example.com SITE_INDEXABLE=true just build
 
 ## Known limits
 
-- Production build (`just build`) is not yet exercised by the test suite — everything above is
-  verified against the dev server. The SEO specs were additionally run by hand against
-  `just preview`, which is how the canonical origin and the hashed font URLs were confirmed.
 - Two paths can't be automated and need a human: a real OS right-click → Paste, and a paste from a
   mobile paste bar, to confirm the `right-click` attribution holds outside the harness.
 - Firefox and Safari restrict programmatic clipboard reads. Detection works everywhere; the preview
